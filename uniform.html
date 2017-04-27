@@ -27,8 +27,7 @@
             for (var p = 0; p < particleCount; p++) {
                 var circle = new THREE.Mesh( geometry, material );
                 scene.add(circle);
-                // circle.position.set(Math.random()*5-2.5, Math.random()*5-2.5, Math.random()*5);// = pos;                
-                circle.position.set(Math.random()*6-3, Math.random()*6-3, 0);// = pos;
+                circle.position.set(Math.random()*6-3, Math.random()*6-3, 0);
             }
 
 			camera.position.z = 5;
