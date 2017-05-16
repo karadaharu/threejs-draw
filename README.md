@@ -6,6 +6,7 @@ check out demo here : https://codepen.io/karadaharu/
 * Inverse transform sampling
 * Box-Muller transform
 * Metropolitan Hastings algorithm
+* Point process
 
 ## Upcoming
 * Gillespie algorithm
@@ -20,5 +21,5 @@ check out demo here : https://codepen.io/karadaharu/
 * time series analysis (sound)
 * neural netowork
 * artificial life
-
+* phase transition
 
