@@ -7,9 +7,9 @@ check out demo here : https://codepen.io/karadaharu/
 * Box-Muller transform
 * Metropolitan Hastings algorithm
 * Point process
+* Gillespie's direct method
 
 ## Upcoming
-* Gillespie algorithm
 * EM algorithm
 * graph theory
 * Lie group
