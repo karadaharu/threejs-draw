@@ -8,8 +8,10 @@ check out demo here : https://codepen.io/karadaharu/
 * Metropolitan Hastings algorithm
 * Point process
 * Gillespie's direct method
+* Ising model
 
 ## Upcoming
+* Dirichlet distribution
 * EM algorithm
 * graph theory
 * Lie group
