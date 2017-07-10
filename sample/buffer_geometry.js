@@ -46,10 +46,14 @@ var indices = new Uint16Array([
 ]);
 
 var uv = new Float32Array([
-    0.0, 1.0,
-    1.0, 1.0,
-    1.0, 0.0,
-    0.0, 0.0
+    // 0.0, 1.0,
+    // 1.0, 1.0,
+    // 1.0, 0.0,
+    // 0.0, 0.0
+    0.2, 0.2,
+    0.1, 1.0,
+    1.0, 0.5,
+    0.4, 0.1    
 ]);
 
 // attributesを追加
@@ -70,15 +74,28 @@ var material_shader = new THREE.RawShaderMaterial({
     fragmentShader: document.getElementById('fragmentShader').textContent
 });
 
-// テクスチャ画像を読み込む
+// テクスチャを読み込む
+// 画像
 var texture = new THREE.TextureLoader().load('../img/mona-lisa.jpg');
-material_shader.uniforms.txtTexture.value = texture;
+// canvas要素
+let txtCanvas = document.createElement('canvas');
+let txtCanvasCtx = txtCanvas.getContext('2d');
+txtCanvasCtx.font = 'normal 80px ' + 'Cabin Sketch';
+txtCanvasCtx.fillStyle = '#00ffff';
+let txt = 'あいう';
+txtCanvasCtx.fillText(
+    txt, 10, 80
+);
+let txtTexture = new THREE.Texture(txtCanvas);
+txtTexture.flipY = false;  // UVを反転しない (WebGLのデフォルトにする)
+txtTexture.needsUpdate = true;  // テクスチャを更新
+
+material_shader.uniforms.txtTexture.value = txtTexture;
 
 var mesh = new THREE.Mesh(geometry, material_shader);
 mesh.position.z = 10;
 
 scene.add(mesh);
-
 
 // レンダリング
 function render() {
