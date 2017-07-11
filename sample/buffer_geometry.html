@@ -13,12 +13,23 @@
 		<script src="../lib/webfontloader.js"></script>
 
     <script id="vertexShader" type="x-shader/x-vertex">
+// three.jsが予め定義してるuniform変数
+uniform mat4 modelMatrix;  // モデル変換行列
+uniform mat4 viewMatrix;  // ビュー変換行列
+uniform mat4 projectionMatrix;  // プロジェクション変換行列
+uniform vec3 cameraPosition;  // カメラの位置  
+
 attribute vec3 position;
 varying vec2 vUv; // fragmentShaderに渡すための変数
 attribute vec2 uv;  //UV座標
 void main() {
     vUv = uv;
-    gl_Position = vec4(position, 1.0);
+    // モデル変換
+    vec4 modelPos = modelMatrix * vec4(position, 1.0);
+    // ビュー変換
+    vec4 modelViewPos = viewMatrix * modelPos;
+    // プロジェクション変換した座標をgl_Positionに代入
+    gl_Position = projectionMatrix * modelViewPos;
 }
     </script>
     <script id="fragmentShader" type="x-shader/x-fragment">

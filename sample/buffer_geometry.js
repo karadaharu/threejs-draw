@@ -4,13 +4,13 @@ var scene = new THREE.Scene();
 // レンダラー
 var renderer = new THREE.WebGLRenderer({alpha:true, antialias: true });
 renderer.setClearColor(0xffffff,1);
-renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 // カメラ
 var camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 1000 );
-camera.position.set(0, 0, 100);
+camera.position.set(0, 0, 10);
 
 // ライト
 var light = new THREE.AmbientLight( 0xffffff );
@@ -25,10 +25,10 @@ var geometry = new THREE.BufferGeometry();
 // |   |
 // a - b
 var vertexPositions = [
-    [-0.5, -1.0, 1.0], // a
+    [-0.5, -0.5, 1.0], // a
     [ 0.5, -0.5, 1.0], // b
-    [ 1.0,  0.5, 1.0], // c
-    [-1.0,  1.0, 1.0]  // d
+    [ 0.5,  0.5, 1.0], // c
+    [-0.5,  0.5, 1.0]  // d
 ];
 
 // Typed Arrayで頂点データを保持
@@ -46,14 +46,10 @@ var indices = new Uint16Array([
 ]);
 
 var uv = new Float32Array([
-    // 0.0, 1.0,
-    // 1.0, 1.0,
-    // 1.0, 0.0,
-    // 0.0, 0.0
-    0.2, 0.2,
-    0.1, 1.0,
-    1.0, 0.5,
-    0.4, 0.1    
+    0.0, 1.0,
+    1.0, 1.0,
+    1.0, 0.0,
+    0.0, 0.0 
 ]);
 
 // attributesを追加
@@ -65,6 +61,7 @@ geometry.addAttribute('uv', new THREE.BufferAttribute(uv,2));
 var material = new THREE.MeshLambertMaterial({
     color: 0xff0000
 });
+
 // シェーダー
 var material_shader = new THREE.RawShaderMaterial({
     uniforms: {
@@ -79,12 +76,18 @@ var material_shader = new THREE.RawShaderMaterial({
 var texture = new THREE.TextureLoader().load('../img/mona-lisa.jpg');
 // canvas要素
 let txtCanvas = document.createElement('canvas');
+txtCanvas.width = 80;
+txtCanvas.height = 80;
 let txtCanvasCtx = txtCanvas.getContext('2d');
-txtCanvasCtx.font = 'normal 80px ' + 'Cabin Sketch';
+txtCanvasCtx.font = 'normal 30px ' + 'Cabin Sketch';
+txtCanvasCtx.fillStyle = '#ff00ff';
+txtCanvasCtx.rect(0,0, 200, 8000);
+txtCanvasCtx.fill();
+
 txtCanvasCtx.fillStyle = '#00ffff';
 let txt = 'あいう';
 txtCanvasCtx.fillText(
-    txt, 10, 80
+    txt, 10, 30
 );
 let txtTexture = new THREE.Texture(txtCanvas);
 txtTexture.flipY = false;  // UVを反転しない (WebGLのデフォルトにする)
@@ -93,7 +96,7 @@ txtTexture.needsUpdate = true;  // テクスチャを更新
 material_shader.uniforms.txtTexture.value = txtTexture;
 
 var mesh = new THREE.Mesh(geometry, material_shader);
-mesh.position.z = 10;
+var mesh1 = new THREE.Mesh(geometry, material);
 
 scene.add(mesh);
 
