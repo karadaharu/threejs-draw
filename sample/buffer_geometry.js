@@ -16,19 +16,28 @@ camera.position.set(0, 0, 10);
 var light = new THREE.AmbientLight( 0xffffff );
 scene.add( light );
 
+// canvas要素
+var txt = '落ち着け';
+var n_char = txt.length;
+var char_size = 512;
+var ratio = 1.1;
+var canvasHeight = char_size * ratio;
+var canvasWidth = char_size * n_char * ratio;
 
 // BufferGeometryを生成
 var geometry = new THREE.BufferGeometry();
-
 // 平面用の頂点を定義
 // d - c
 // |   |
 // a - b
+var l = 2.0;
+var l_w = l*n_char;
+var l_h = l;
 var vertexPositions = [
-    [-0.5, -0.5, 1.0], // a
-    [ 0.5, -0.5, 1.0], // b
-    [ 0.5,  0.5, 1.0], // c
-    [-0.5,  0.5, 1.0]  // d
+    [-l_w, -l_h, 1.0], // a
+    [ l_w, -l_h, 1.0], // b
+    [ l_w,  l_h, 1.0], // c
+    [-l_w,  l_h, 1.0]  // d
 ];
 
 // Typed Arrayで頂点データを保持
@@ -57,6 +66,7 @@ geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
 geometry.setIndex(new THREE.BufferAttribute(indices,  1));
 geometry.addAttribute('uv', new THREE.BufferAttribute(uv,2));
 
+
 // ふつうの
 var material = new THREE.MeshLambertMaterial({
     color: 0xff0000
@@ -74,22 +84,26 @@ var material_shader = new THREE.RawShaderMaterial({
 // テクスチャを読み込む
 // 画像
 var texture = new THREE.TextureLoader().load('../img/mona-lisa.jpg');
-// canvas要素
-let txtCanvas = document.createElement('canvas');
-txtCanvas.width = 80;
-txtCanvas.height = 80;
-let txtCanvasCtx = txtCanvas.getContext('2d');
-txtCanvasCtx.font = 'normal 30px ' + 'Cabin Sketch';
+
+
+var txtCanvas = document.createElement('canvas');
+txtCanvas.width = canvasWidth;
+txtCanvas.height = canvasHeight;
+var txtCanvasCtx = txtCanvas.getContext('2d');
+txtCanvasCtx.font = 'normal '+ char_size.toString()  +'px' + ' ' + 'Hiragino Mincho ProN';
 txtCanvasCtx.fillStyle = '#ff00ff';
-txtCanvasCtx.rect(0,0, 200, 8000);
+txtCanvasCtx.textAlign = 'center';
+txtCanvasCtx.rect(0,0, txtCanvas.width, txtCanvas.height);
 txtCanvasCtx.fill();
 
-txtCanvasCtx.fillStyle = '#00ffff';
-let txt = 'あいう';
+txtCanvasCtx.fillStyle = '#000000';
 txtCanvasCtx.fillText(
-    txt, 10, 30
+    // txt, txtCanvas.width, txtCanvas.height
+    txt, (canvasWidth)/2, char_size
 );
-let txtTexture = new THREE.Texture(txtCanvas);
+var txtTexture = new THREE.Texture(txtCanvas);
+
+// txtTexture.minFilter = THREE.LinearFilter;
 txtTexture.flipY = false;  // UVを反転しない (WebGLのデフォルトにする)
 txtTexture.needsUpdate = true;  // テクスチャを更新
 
@@ -100,9 +114,38 @@ var mesh1 = new THREE.Mesh(geometry, material);
 
 scene.add(mesh);
 
+var updateText = function(txtCanvasCtx, txtOld, txtNew) {
+    txtCanvasCtx.fillStyle = '#ff00ff';    
+    txtCanvasCtx.fillText(
+        txtOld, (canvasWidth)/2, char_size        
+    );
+    txtCanvasCtx.fillStyle = '#000000';    
+    txtCanvasCtx.fillText(
+        txtNew, (canvasWidth)/2, char_size        
+    );
+    txtTexture.needsUpdate = true;  // テクスチャを更新     
+};
+
+
+// txtCanvasCtx.fillStyle = '#ffffff';    
+// txtCanvasCtx.fillText('もちつけ', (canvasWidth)/2, char_size);
+
 // レンダリング
+//
+var is_update = true;
 function render() {
-    requestAnimationFrame(render);
-    renderer.render(scene, camera);
+    if (is_update) {
+      requestAnimationFrame(render);
+      renderer.render(scene, camera);
+      is_update = false;
+    //   txtCanvasCtx.fillStyle = '#ffffff';    
+    // txtCanvasCtx.fillText('もちつけ', (canvasWidth)/2, char_size);
+      updateText(txtCanvasCtx, '落ち着け', 'もちつけ');
+
+    //   var txtTexture = new THREE.Texture(txtCanvas);      
+    //     txtTexture.flipY = false;  // UVを反転しない (WebGLのデフォルトにする)
+     
+    //   material_shader.uniforms.txtTexture.value = txtTexture;      
+    }
 }
 render();
