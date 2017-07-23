@@ -3,7 +3,8 @@ var scene = new THREE.Scene();
 
 // レンダラー
 var renderer = new THREE.WebGLRenderer({alpha:true, antialias: true });
-renderer.setClearColor(0xffffff,1);
+var col_bkg = 0x33ee00;
+renderer.setClearColor(col_bkg,1);
 renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
@@ -91,10 +92,10 @@ txtCanvas.width = canvasWidth;
 txtCanvas.height = canvasHeight;
 var txtCanvasCtx = txtCanvas.getContext('2d');
 txtCanvasCtx.font = 'normal '+ char_size.toString()  +'px' + ' ' + 'Hiragino Mincho ProN';
-txtCanvasCtx.fillStyle = '#ff00ff';
+// txtCanvasCtx.fillStyle = '#ff00ff';
 txtCanvasCtx.textAlign = 'center';
-txtCanvasCtx.rect(0,0, txtCanvas.width, txtCanvas.height);
-txtCanvasCtx.fill();
+// txtCanvasCtx.rect(0,0, txtCanvas.width, txtCanvas.height);
+// txtCanvasCtx.fill();
 
 txtCanvasCtx.fillStyle = '#000000';
 txtCanvasCtx.fillText(
@@ -115,10 +116,7 @@ var mesh1 = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
 var updateText = function(txtCanvasCtx, txtOld, txtNew) {
-    txtCanvasCtx.fillStyle = '#ff00ff';    
-    txtCanvasCtx.fillText(
-        txtOld, (canvasWidth)/2, char_size        
-    );
+    txtCanvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
     txtCanvasCtx.fillStyle = '#000000';    
     txtCanvasCtx.fillText(
         txtNew, (canvasWidth)/2, char_size        
@@ -135,17 +133,11 @@ var updateText = function(txtCanvasCtx, txtOld, txtNew) {
 var is_update = true;
 function render() {
     if (is_update) {
-      requestAnimationFrame(render);
-      renderer.render(scene, camera);
-      is_update = false;
-    //   txtCanvasCtx.fillStyle = '#ffffff';    
-    // txtCanvasCtx.fillText('もちつけ', (canvasWidth)/2, char_size);
-      updateText(txtCanvasCtx, '落ち着け', 'もちつけ');
 
-    //   var txtTexture = new THREE.Texture(txtCanvas);      
-    //     txtTexture.flipY = false;  // UVを反転しない (WebGLのデフォルトにする)
-     
-    //   material_shader.uniforms.txtTexture.value = txtTexture;      
+      is_update = false;
+      updateText(txtCanvasCtx, '落ち着け', 'もちつけ');   
+      requestAnimationFrame(render);
+      renderer.render(scene, camera);      
     }
 }
 render();
