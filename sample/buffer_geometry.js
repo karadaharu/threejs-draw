@@ -79,7 +79,8 @@ var material_shader = new THREE.RawShaderMaterial({
         txtTexture : {type : 't'}
     },    
     vertexShader: document.getElementById('vertexShader').textContent,
-    fragmentShader: document.getElementById('fragmentShader').textContent
+    fragmentShader: document.getElementById('fragmentShader').textContent,
+    transparent: true
 });
 
 // テクスチャを読み込む
@@ -117,7 +118,7 @@ scene.add(mesh);
 
 var updateText = function(txtCanvasCtx, txtOld, txtNew) {
     txtCanvasCtx.clearRect(0, 0, canvasWidth, canvasHeight);
-    txtCanvasCtx.fillStyle = '#000000';    
+    txtCanvasCtx.fillStyle = '#000000';
     txtCanvasCtx.fillText(
         txtNew, (canvasWidth)/2, char_size        
     );
@@ -135,7 +136,7 @@ function render() {
     if (is_update) {
 
       is_update = false;
-      updateText(txtCanvasCtx, '落ち着け', 'もちつけ');   
+    //   updateText(txtCanvasCtx, '落ち着け', 'もちつけ');   
       requestAnimationFrame(render);
       renderer.render(scene, camera);      
     }
