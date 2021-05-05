@@ -1,6 +1,11 @@
 # Visualization of Math/Algorithm by three.js
 check out demo here : https://codepen.io/karadaharu/
 
+or run server:
+```
+$ php -S 0.0.0.0:8000
+```
+
 ## List
 * Uniform distribution
 * Inverse transform sampling

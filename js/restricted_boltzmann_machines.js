@@ -92,21 +92,6 @@ var h = 70;
 let l = 0.85;
 var beta = 0.91;
 
-
-// RBM
-var visibles = [];
-var hiddnes = [];
-
-
-
-
-
-
-
-
-
-
-
 // Hopfield
 var n_nodes = 9;
 var n_width = 3;
